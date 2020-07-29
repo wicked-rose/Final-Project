@@ -35,6 +35,8 @@ void read() {
         }
     }
 }
+#include "AlphabetTree.h"
+using namespace _AlphabetNode;
 
 int main() {
     int choice = 0;
