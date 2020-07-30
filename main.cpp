@@ -56,14 +56,14 @@ int main() {
             Sleep(1000);
             cout << "Top 10 Most Sarcastic Words From DS 1: " << endl;
             auto t1 = clock::now();
-            testTime1(); // this will be function to print top 10 from DS 1
+            // this will be function to print top 10 from DS 1
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "Time taken by DS 1: " << time_taken << " nanoseconds" << endl << endl;
 
             cout << "Top 10 Most Sarcastic Words From DS 2: " << endl;
             t1 = clock::now();
-            testTime2(); // this will be function to print top 10 from DS 2
+            // this will be function to print top 10 from DS 2
             t2 = clock::now();
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "Time taken by DS 2: " << time_taken << " nanoseconds" << endl << endl;
@@ -84,14 +84,14 @@ int main() {
             cin >> word;
 
             auto t1 = clock::now();
-            int rating= testRead(word); // this will be function to find word in DS 1
+            int rating = 0; // this will be function to find word in DS 1 and return rating
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
             cout << "Time taken by DS 1: " << time_taken << " nanoseconds" << endl << endl;
 
             t1 = clock::now();
-            rating= testRead(word); // this will be function to find word in DS 2
+            rating = 0; // this will be function to find word in DS 2 and return rating
             t2 = clock::now();
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
