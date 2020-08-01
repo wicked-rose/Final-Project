@@ -14,7 +14,7 @@
 #else
     #include <unistd.h>
     void delay(unsigned milliseconds){
-    usleep(milliseconds*1000);
+        usleep(milliseconds*1000);
     }
 #endif
 
@@ -66,7 +66,7 @@ int main() {
 
         if (choice == 1) {
             cout << "Wow thanks a lot for choosing that" << endl << endl;
-            sleep(1000);
+            delay(1000);
             cout << "Top 10 Most Sarcastic Words From DS 1: " << endl;
             auto t1 = clock::now();
             // this will be function to print top 10 from DS 1
