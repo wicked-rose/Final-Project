@@ -64,7 +64,7 @@ int AlphabetTree::getCount(string word) {
     for (int stringPos = 0; stringPos < word.length(); stringPos++){
         AlphabetNode* tempNext = currentNode->getSubletter(word.at(stringPos));
         if(tempNext == nullptr)
-            break;
+            return 0;
         currentNode = tempNext;
     }
 

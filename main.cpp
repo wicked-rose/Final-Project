@@ -51,7 +51,7 @@ void read() {
 
 
 int main() {
-    cout << "Loading..." << endl;
+    cout << "*insert funny loading message here*" << endl;
     AlphabetTree* tree = new AlphabetTree();
     tree->loadFile();
 
@@ -61,6 +61,7 @@ int main() {
     while (choice != 3) {
         cout << "************************************" << endl;
         cout << "Welcome to the Sarcasm Detector 2000" << endl;
+        cout << "  by *insert funny group name here* " << endl;
         cout << "************************************" << endl;
         cout << "Menu:" << endl;
         cout << "1. View top 10 sarcastic words" << endl;
