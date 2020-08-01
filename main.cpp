@@ -6,10 +6,20 @@
 #include <sstream>
 #include <algorithm>
 #include <locale>
+#include <chrono>
 #include "AlphabetTree.h"
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 using namespace _AlphabetNode;
 using namespace std;
+using namespace chrono;
+
+// TODO: Rename DS 1/DS 2 to actual names. Remove read function from main.cpp if implemented elsewhere.
 
 void read() {
     // read in file
@@ -38,10 +48,13 @@ void read() {
         }
     }
 }
-#include "AlphabetTree.h"
-using namespace _AlphabetNode;
+
 
 int main() {
+    cout << "Loading..." << endl;
+    AlphabetTree* tree = new AlphabetTree();
+    tree->loadFile();
+
     int choice = 0;
     typedef high_resolution_clock clock;
 
@@ -61,17 +74,17 @@ int main() {
             Sleep(1000);
             cout << "Top 10 Most Sarcastic Words From DS 1: " << endl;
             auto t1 = clock::now();
-            // this will be function to print top 10 from DS 1
+            tree->printTopTen();
             auto t2 = clock::now();
-            double time_taken = duration_cast<nanoseconds>(t2-t1).count();
-            cout << "Time taken by DS 1: " << time_taken << " nanoseconds" << endl << endl;
+            double time_taken = duration_cast<milliseconds>(t2-t1).count();
+            cout << "Time taken by DS 1: " << time_taken << " milliseconds" << endl << endl;
 
             cout << "Top 10 Most Sarcastic Words From DS 2: " << endl;
             t1 = clock::now();
             // this will be function to print top 10 from DS 2
             t2 = clock::now();
-            time_taken = duration_cast<nanoseconds>(t2-t1).count();
-            cout << "Time taken by DS 2: " << time_taken << " nanoseconds" << endl << endl;
+            time_taken = duration_cast<milliseconds>(t2-t1).count();
+            cout << "Time taken by DS 2: " << time_taken << " milliseconds" << endl << endl;
 
             Sleep(4000);
 
@@ -88,8 +101,9 @@ int main() {
             cout << "\nEnter a word to get its sarcasm rating: " << endl;
             cin >> word;
 
+
             auto t1 = clock::now();
-            int rating = 0; // this will be function to find word in DS 1 and return rating
+            int rating = tree->getCount(word); // this will be function to find word in DS 1 and return rating
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
@@ -108,15 +122,9 @@ int main() {
     Sleep(1000);
     cout << "Have a fantastic day \\s" << endl;
 
-    AlphabetTree* tree = new AlphabetTree();
-    tree->loadFile();
-
-//    tree->addWord("foo");
-//    tree->getCount("foo");
-
 //    tree->printWords();
     tree->printCount();
-    tree->printTopTen();
+
     return 0;
 }
 

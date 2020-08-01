@@ -11,7 +11,7 @@ AlphabetTree::AlphabetTree() {
 
 
 void AlphabetTree::loadFile() {
-    cout << "Starting file read" << endl;
+//    cout << "Starting file read" << endl;
 
     // read in file
     fstream fin;
@@ -38,7 +38,7 @@ void AlphabetTree::loadFile() {
         }
     }
 
-    cout << "File read finished" << endl;
+//    cout << "File read finished" << endl;
 }
 
 void AlphabetTree::addWord(string word) {
@@ -63,9 +63,10 @@ int AlphabetTree::getCount(string word) {
         currentNode = tempNext;
         stringPos++;
     }
-    int tempCount = currentNode->getCount() - currentNode->getSublettersCount();
-    cout << tempCount << " occurrences of the word " << word << endl;
-    return tempCount;
+//    int tempCount = currentNode->getCount() - currentNode->getSublettersCount();
+//    cout << tempCount << " occurrences of the word " << word << endl;
+//    return tempCount;
+    return currentNode->getCount() - currentNode->getSublettersCount();
 }
 
 void AlphabetTree::printTopTen(){

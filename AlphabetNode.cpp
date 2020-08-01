@@ -85,10 +85,6 @@ map<char, AlphabetNode>* AlphabetNode::getSubletters() {
 }
 
 void AlphabetNode::selfToRootString(string* outString) {
-//    cout << prefix << letter;
-//    outString = letter + outString;
-//    cout << *outString << endl;
-//    cout << letter << endl;
     if (letter == -1 || letter == 0)
         return;
     outString->insert(0, 1, letter);
