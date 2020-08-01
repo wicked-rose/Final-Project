@@ -10,6 +10,37 @@ AlphabetTree::AlphabetTree() {
 }
 
 
+void AlphabetTree::loadFile() {
+    cout << "Starting file read" << endl;
+
+    // read in file
+    fstream fin;
+    fin.open("../train-balanced-sarcasm.csv", ios::in);
+
+    string line, word, temp;
+
+    while (!fin.eof()) {
+        // read each line
+        getline(fin, line, '\n');
+        stringstream s(line);
+        // separate by words
+        while (getline(s, word, ' ')) {
+            // get rid of punctuation
+            int length = word.size();
+            for (int i = 0; i < length; i++) {
+                if (ispunct(word[i])) {
+                    word.erase(i--, 1);
+                    length = word.size();
+                }
+            }
+            transform(word.begin(), word.end(), word.begin(), ::tolower); // Lower-case letters
+            addWord(word);
+        }
+    }
+
+    cout << "File read finished" << endl;
+}
+
 void AlphabetTree::addWord(string word) {
     AlphabetNode* currentNode = topNode;
     int stringPos = 0;

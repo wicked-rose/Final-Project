@@ -5,7 +5,10 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <locale>
+#include "AlphabetTree.h"
 
+using namespace _AlphabetNode;
 using namespace std;
 
 void read() {
@@ -104,6 +107,16 @@ int main() {
     }
     Sleep(1000);
     cout << "Have a fantastic day \\s" << endl;
+
+    AlphabetTree* tree = new AlphabetTree();
+    tree->loadFile();
+
+//    tree->addWord("foo");
+//    tree->getCount("foo");
+
+//    tree->printWords();
+    tree->printCount();
+    tree->printTopTen();
     return 0;
 }
 

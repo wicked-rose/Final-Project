@@ -8,6 +8,9 @@
 #include <string>
 #include <iostream>
 #include <stack>
+#include <fstream>
+#include <algorithm>
+#include <sstream>
 #include "AlphabetNode.h"
 
 using namespace _AlphabetNode;
@@ -19,6 +22,9 @@ private:
 
 public:
     AlphabetTree();
+
+    void loadFile();
+
     void addWord(string word); // Adds a word into the tree, returns the word's new count.
     int getCount(string word);
     void printWords();
