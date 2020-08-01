@@ -8,11 +8,18 @@
 #include <locale>
 #include <chrono>
 #include "AlphabetTree.h"
+#include <chrono>
 
 #ifdef _WIN32
-#include <Windows.h>
+    #include <Windows.h>
+    void delay(unsigned milliseconds){
+        Sleep(milliseconds);
+    }
 #else
-#include <unistd.h>
+    #include <unistd.h>
+    void delay(unsigned milliseconds){
+        usleep(milliseconds*1000);
+    }
 #endif
 
 using namespace _AlphabetNode;
@@ -72,7 +79,7 @@ int main() {
 
         if (choice == 1) {
             cout << "Wow thanks a lot for choosing that" << endl << endl;
-            Sleep(1000);
+            delay(1000);
             cout << "Top 10 Most Sarcastic Words From DS 1: " << endl;
             auto t1 = clock::now();
             tree->printTopTen();
@@ -87,18 +94,18 @@ int main() {
             time_taken = duration_cast<milliseconds>(t2-t1).count();
             cout << "Time taken by DS 2: " << time_taken << " milliseconds" << endl << endl;
 
-            Sleep(4000);
+            delay(4000);
 
         } else if (choice == 2) {
             string word;
             cout << "I guess that's one choice to make";
-            Sleep(500);
+            delay(500);
             cout << ".";
-            Sleep(500);
+            delay(500);
             cout << ".";
-            Sleep(500);
+            delay(500);
             cout << ".";
-            Sleep(500);
+            delay(500);
             cout << "\nEnter a word to get its sarcasm rating: " << endl;
             cin >> word;
 
@@ -117,10 +124,10 @@ int main() {
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
             cout << "Time taken by DS 2: " << time_taken << " nanoseconds" << endl << endl;
 
-            Sleep(4000);
+            delay(4000);
         }
     }
-    Sleep(1000);
+    delay(1000);
     cout << "Have a fantastic day \\s" << endl;
 
 //    tree->printWords();
