@@ -13,6 +13,7 @@ namespace _AlphabetNode {
         char letter;
         AlphabetNode* parent;
         std::map<char, AlphabetNode> subletters;
+        void selfToAncestorsString(std::string *);
 
     public:
         AlphabetNode();
@@ -21,21 +22,17 @@ namespace _AlphabetNode {
 
         char getLetter();
 
+        unsigned int getCount();
+        void incCount();
+
         AlphabetNode* getSubletter(char);
         AlphabetNode* addSubletter(char);
         unsigned int getSublettersCount();
         std::map<char, AlphabetNode>* getSubletters();
 
-        unsigned int getCount();
-        void incCount();
-
         void recursivePrint(char *prefix);
 
-        void prefixPrint(std::string);
-
-        void selfToRootString(std::string *);
-
-        std::string getSelfToRootString();
+        std::string getRootToSelfString();
     };
 }
 

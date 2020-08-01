@@ -19,7 +19,7 @@ using namespace _AlphabetNode;
 using namespace std;
 using namespace chrono;
 
-// TODO: Rename DS 1/DS 2 to actual names. Remove read function from main.cpp if implemented elsewhere.
+// TODO: Rename DS 1/DS 2 to actual names. Remove read function from main.cpp if implemented elsewhere in .
 
 void read() {
     // read in file
@@ -123,7 +123,7 @@ int main() {
     cout << "Have a fantastic day \\s" << endl;
 
 //    tree->printWords();
-    tree->printCount();
+//    tree->printCount();
 
     return 0;
 }
