@@ -11,22 +11,24 @@ using namespace std;
 AlphabetNode::AlphabetNode() : letter(0){
     count = 0;
     subletters = map<char, AlphabetNode>();
+    parent = nullptr;
 }
 
-AlphabetNode::AlphabetNode(char letter) : letter(letter){
+AlphabetNode::AlphabetNode(char letter, AlphabetNode* parent) : letter(letter), parent(parent){
     count = 0;
     subletters = map<char, AlphabetNode>();
 }
 
 AlphabetNode::AlphabetNode(AlphabetNode *pNode) : letter(pNode->getLetter()){
     this->count = pNode->getCount();
+    this->parent = pNode->parent;
 }
 
-int AlphabetNode::getCount(){
+unsigned int AlphabetNode::getCount(){
     return count;
 }
 
-int AlphabetNode::getSublettersCount(){
+unsigned int AlphabetNode::getSublettersCount(){
     int tempCount = 0;
     for(auto iter = subletters.begin(); iter != subletters.end(); iter++){
         tempCount += iter->second.getCount();
@@ -44,7 +46,7 @@ AlphabetNode* AlphabetNode::getSubletter(char subletter){
 
 AlphabetNode *AlphabetNode::addSubletter(char subletter) {
     if(subletters.count(subletter) == 0)
-        subletters[subletter] = new AlphabetNode(subletter);
+        subletters[subletter] = new AlphabetNode(subletter, this);
     return &subletters[subletter];
 }
 
@@ -76,4 +78,25 @@ void AlphabetNode::recursivePrint(char* prefix){
         }
         iter->second.recursivePrint(temp);
     }
+}
+
+map<char, AlphabetNode>* AlphabetNode::getSubletters() {
+    return &subletters;
+}
+
+void AlphabetNode::selfToRootString(string* outString) {
+//    cout << prefix << letter;
+//    outString = letter + outString;
+//    cout << *outString << endl;
+//    cout << letter << endl;
+    if (letter == -1 || letter == 0)
+        return;
+    outString->insert(0, 1, letter);
+    parent->selfToRootString(outString);
+}
+
+string AlphabetNode::getSelfToRootString(){
+    string outString = "";
+    selfToRootString(&outString);
+    return outString;
 }

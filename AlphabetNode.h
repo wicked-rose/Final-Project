@@ -9,25 +9,33 @@
 namespace _AlphabetNode {
     class AlphabetNode {
     private:
-        int count;
+        unsigned int count;
         char letter;
+        AlphabetNode* parent;
         std::map<char, AlphabetNode> subletters;
 
     public:
         AlphabetNode();
-        AlphabetNode(char);
+        AlphabetNode(char, AlphabetNode*);
         AlphabetNode(AlphabetNode *pNode);
 
         char getLetter();
 
         AlphabetNode* getSubletter(char);
         AlphabetNode* addSubletter(char);
-        int getSublettersCount();
+        unsigned int getSublettersCount();
+        std::map<char, AlphabetNode>* getSubletters();
 
-        int getCount();
+        unsigned int getCount();
         void incCount();
 
         void recursivePrint(char *prefix);
+
+        void prefixPrint(std::string);
+
+        void selfToRootString(std::string *);
+
+        std::string getSelfToRootString();
     };
 }
 

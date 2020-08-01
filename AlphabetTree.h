@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include <stack>
 #include "AlphabetNode.h"
 
 using namespace _AlphabetNode;
@@ -21,6 +22,9 @@ public:
     void addWord(string word); // Adds a word into the tree, returns the word's new count.
     int getCount(string word);
     void printWords();
+    void printTopTen();
+
+    void printCount();
 };
 
 

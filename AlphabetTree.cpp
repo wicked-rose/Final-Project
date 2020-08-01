@@ -6,7 +6,7 @@
 #include "AlphabetTree.h"
 
 AlphabetTree::AlphabetTree() {
-    this->topNode = new AlphabetNode(-1);
+    this->topNode = new AlphabetNode(-1, nullptr);
 }
 
 
@@ -19,7 +19,7 @@ void AlphabetTree::addWord(string word) {
         stringPos++;
     }
     currentNode->incCount(); // Have to increment the last letter
-    cout << "Added the word " << word << endl;
+//    cout << "Added the word " << word << endl;
 }
 
 int AlphabetTree::getCount(string word) {
@@ -37,8 +37,67 @@ int AlphabetTree::getCount(string word) {
     return tempCount;
 }
 
+void AlphabetTree::printTopTen(){
+    stack<AlphabetNode *> nodeStack;
+    pair<int, AlphabetNode*> topTen[10];
+    nodeStack.push(topNode);
+
+    while (!nodeStack.empty()){
+        AlphabetNode *currentNode = nodeStack.top();
+        nodeStack.pop();
+
+        // Check if count > topTen[9], if so, insert into topTen
+        unsigned int count = currentNode->getCount() - currentNode->getSublettersCount();
+        if(count > topTen[9].first){
+            topTen[9] = make_pair(count, currentNode);
+            for(int i = 8; i >= 0; i--) {
+                if (topTen[i].first < count) {
+                    topTen[i + 1] = topTen[i];
+                    topTen[i] = make_pair(count, currentNode);
+                }
+                else
+                    break;
+            }
+        }
+
+
+        // Push children of the popped node to stack from right to left
+        for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
+            iter--;
+            nodeStack.push(&iter->second);
+        }
+    }
+
+    for(int i = 0; i < 10; i++){
+        if(topTen[i].second == nullptr)
+            break;
+        cout << i+1 << ". \""  << topTen[i].second->getSelfToRootString() << "\"  \twith " << topTen[i].first << " entries" << endl;
+    }
+
+}
+
 void AlphabetTree::printWords(){
-    cout << "Printing words" << endl;
-    char temp [1] = "";
-    topNode->recursivePrint(temp);
+//    cout << "Printing words" << endl;
+//    char temp [1] = "";
+//    topNode->recursivePrint(temp);
+
+    stack<AlphabetNode *> nodeStack;
+    nodeStack.push(topNode);
+
+    while (!nodeStack.empty()){
+        AlphabetNode *currentNode = nodeStack.top();
+        nodeStack.pop();
+
+        cout << currentNode->getSelfToRootString() << ": " << currentNode->getCount() - currentNode->getSublettersCount() << endl;
+
+        // Push children of the popped node to stack from right to left
+        for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
+            iter--;
+            nodeStack.push(&iter->second);
+        }
+    }
+}
+
+void AlphabetTree::printCount() {
+    cout << "There are " << topNode->getCount() << " (non-unique) words in this dataset." << endl;
 }
