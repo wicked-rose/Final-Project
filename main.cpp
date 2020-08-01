@@ -8,7 +8,7 @@
 #include <locale>
 #include <chrono>
 #include "AlphabetTree.h"
-#include <chrono>
+
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -47,6 +47,9 @@ void read(AlphabetTree &tree) {
                     length = word.size();
                 }
             }
+            // turns each letter lowercase
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+
             tree.addWord(word);
         }
     }
@@ -125,9 +128,6 @@ int main() {
     }
     delay(1000);
     cout << "Have a fantastic day \\s" << endl;
-
-//    tree->printWords();
-//    tree->printCount();
 
     return 0;
 }
