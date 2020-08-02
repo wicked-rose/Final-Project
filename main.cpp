@@ -93,6 +93,9 @@ int main() {
             time_taken = duration_cast<milliseconds>(t2-t1).count();
             cout << "Time taken by Hash Table: " << time_taken << " milliseconds" << endl << endl;
 
+            delay(1000);
+            cout << "How exciting!" << endl;
+
             delay(4000);
 
         } else if (choice == 2) {
