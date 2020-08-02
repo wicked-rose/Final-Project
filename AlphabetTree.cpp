@@ -10,38 +10,6 @@ AlphabetTree::AlphabetTree() {
     this->topNode = new AlphabetNode(-1, nullptr);
 }
 
-// Load the .csv file into the tree
-void AlphabetTree::loadFile() {
-    // read in file
-    fstream fin;
-    fin.open("../train-balanced-sarcasm.csv", ios::in);
-
-    string line, word, temp;
-
-    while (!fin.eof()) {
-        // read each line
-        getline(fin, line, '\n');
-        stringstream s(line);
-        // separate by words
-        while (getline(s, word, ' ')) {
-            // get rid of punctuation
-            int length = word.size();
-            for (int i = 0; i < length; i++) {
-                if (ispunct(word[i])) {
-                    word.erase(i--, 1);
-                    length = word.size();
-                }
-            }
-
-            // Lower-case letters
-            transform(word.begin(), word.end(), word.begin(), ::tolower);
-
-            // Add word into the tree
-            addWord(word);
-        }
-    }
-}
-
 // Adds a word into the tree
 void AlphabetTree::addWord(string word) {
     AlphabetNode* currentNode = topNode;
@@ -64,7 +32,7 @@ int AlphabetTree::getCount(string word) {
     for (int stringPos = 0; stringPos < word.length(); stringPos++){
         AlphabetNode* tempNext = currentNode->getSubletter(word.at(stringPos));
         if(tempNext == nullptr)
-            break;
+            return 0;
         currentNode = tempNext;
     }
 

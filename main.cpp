@@ -8,7 +8,7 @@
 #include <locale>
 #include <chrono>
 #include "AlphabetTree.h"
-#include <chrono>
+
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -26,15 +26,12 @@ using namespace _AlphabetNode;
 using namespace std;
 using namespace chrono;
 
-// TODO: Rename DS 1/DS 2 to actual names. Remove read function from main.cpp if implemented elsewhere in .
-
-void read() {
+void read(AlphabetTree &tree) {
     // read in file
     fstream fin;
     fin.open("../train-balanced-sarcasm.csv", ios::in);
 
     string line, word, temp;
-    vector<string> words; // temp data structure for testing
 
     while (!fin.eof()) {
         // read each line
@@ -50,17 +47,19 @@ void read() {
                     length = word.size();
                 }
             }
-            // TODO: replace with inserting into data structure
-            words.push_back(((word)));
+            // turns each letter lowercase
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+            tree.addWord(word);
         }
     }
 }
 
 
 int main() {
-    cout << "Loading..." << endl;
-    AlphabetTree* tree = new AlphabetTree();
-    tree->loadFile();
+    cout << "*insert funny loading message here*" << endl;
+    AlphabetTree tree = AlphabetTree();
+    read(tree);
 
     int choice = 0;
     typedef high_resolution_clock clock;
@@ -68,6 +67,7 @@ int main() {
     while (choice != 3) {
         cout << "************************************" << endl;
         cout << "Welcome to the Sarcasm Detector 2000" << endl;
+        cout << "  by *insert funny group name here* " << endl;
         cout << "************************************" << endl;
         cout << "Menu:" << endl;
         cout << "1. View top 10 sarcastic words" << endl;
@@ -79,19 +79,19 @@ int main() {
         if (choice == 1) {
             cout << "Wow thanks a lot for choosing that" << endl << endl;
             delay(1000);
-            cout << "Top 10 Most Sarcastic Words From DS 1: " << endl;
+            cout << "Top 10 Most Sarcastic Words From 26-ary Tree: " << endl;
             auto t1 = clock::now();
-            tree->printTopTen();
+            tree.printTopTen();
             auto t2 = clock::now();
             double time_taken = duration_cast<milliseconds>(t2-t1).count();
-            cout << "Time taken by DS 1: " << time_taken << " milliseconds" << endl << endl;
+            cout << "Time taken by 26-ary Tree: " << time_taken << " milliseconds" << endl << endl;
 
-            cout << "Top 10 Most Sarcastic Words From DS 2: " << endl;
+            cout << "Top 10 Most Sarcastic Words From Hash Table: " << endl;
             t1 = clock::now();
             // this will be function to print top 10 from DS 2
             t2 = clock::now();
             time_taken = duration_cast<milliseconds>(t2-t1).count();
-            cout << "Time taken by DS 2: " << time_taken << " milliseconds" << endl << endl;
+            cout << "Time taken by Hash Table: " << time_taken << " milliseconds" << endl << endl;
 
             delay(4000);
 
@@ -110,27 +110,24 @@ int main() {
 
 
             auto t1 = clock::now();
-            int rating = tree->getCount(word); // this will be function to find word in DS 1 and return rating
+            int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
-            cout << "Time taken by DS 1: " << time_taken << " nanoseconds" << endl << endl;
+            cout << "Time taken by 26-ary Tree: " << time_taken << " nanoseconds" << endl << endl;
 
             t1 = clock::now();
             rating = 0; // this will be function to find word in DS 2 and return rating
             t2 = clock::now();
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
-            cout << "Time taken by DS 2: " << time_taken << " nanoseconds" << endl << endl;
+            cout << "Time taken by Hash Table: " << time_taken << " nanoseconds" << endl << endl;
 
             delay(4000);
         }
     }
     delay(1000);
-    cout << "Have a fantastic day \\s" << endl;
-
-//    tree->printWords();
-//    tree->printCount();
+    cout << "Have a fantastic day /s" << endl;
 
     return 0;
 }
