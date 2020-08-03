@@ -29,18 +29,12 @@ AlphabetNode::AlphabetNode(AlphabetNode *pNode) : letter(pNode->getLetter()){
     this->subletters = pNode->subletters;
 }
 
-unsigned int AlphabetNode::getCount(){
-    return count;
+AlphabetNode::~AlphabetNode() {
+    this->parent->delSubletter(this->letter);
 }
 
-// Return the combination of the counts of each subletter
-unsigned int AlphabetNode::getSublettersCount(){
-    int tempCount = 0;
-    // Iterate through every subletter
-    for(auto iter = subletters.begin(); iter != subletters.end(); iter++){
-        tempCount += iter->second.getCount();
-    }
-    return tempCount;
+unsigned int AlphabetNode::getCount(){
+    return count;
 }
 
 // Return the pointer to the subletter
@@ -57,6 +51,16 @@ AlphabetNode *AlphabetNode::addSubletter(char subletter) {
     return &subletters[subletter];
 }
 
+void AlphabetNode::delSubletter(char subletter) {
+    subletters.erase(subletter);
+
+    // Check if there is a reason to keep this node
+    if(count > 0)
+        return;
+    else if(getSubletters()->empty()){
+        delete this;
+    }
+}
 
 char AlphabetNode::getLetter() {
     return letter;
@@ -66,14 +70,24 @@ void AlphabetNode::incCount(){
     count++;
 }
 
+// Decrements the count and deletes the node if count gets to 0 and there are no subletters
+void AlphabetNode::decCount() {
+    if(count-- > 0)
+        return;
+    else if(getSubletters()->empty()){
+        delete this;
+    }
+}
+
+
 // Recursively print every word in the tree below it
 void AlphabetNode::recursivePrint(char* prefix){
     if(letter == 0)
         return;
 
-    unsigned int tempCount = getCount() - getSublettersCount();
-    if(tempCount != 0)
-        cout << tempCount << " occurrence(s) of the word " << prefix << letter << endl;
+    unsigned int count = getCount();
+    if(count != 0)
+        cout << count << " occurrence(s) of the word " << prefix << letter << endl;
 
     if(subletters.empty())
         return;
@@ -100,7 +114,7 @@ void AlphabetNode::selfToAncestorsString(string* outString) {
     parent->selfToAncestorsString(outString);
 }
 
-//Returns the Root-to-Self string, aka a word in correct order
+// Returns the Root-to-Self string, aka a word in correct order
 string AlphabetNode::getRootToSelfString(){
     string outString;
     selfToAncestorsString(&outString);

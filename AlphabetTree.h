@@ -21,7 +21,8 @@ private:
 public:
     AlphabetTree();
 
-    void addWord(string word); // Adds a word into the tree, returns the word's new count.
+    void addWord(string word); // Adds a word into the tree
+    void delWord(string word); // Removes a count of a word in the tree
     int getCount(string word);
     void printWords();
     void printTopTen();

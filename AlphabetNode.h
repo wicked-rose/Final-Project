@@ -19,15 +19,17 @@ namespace _AlphabetNode {
         AlphabetNode();
         AlphabetNode(char, AlphabetNode*);
         AlphabetNode(AlphabetNode *pNode);
+        ~AlphabetNode();
 
         char getLetter();
 
         unsigned int getCount();
         void incCount();
+        void decCount();
 
         AlphabetNode* getSubletter(char);
         AlphabetNode* addSubletter(char);
-        unsigned int getSublettersCount();
+        void delSubletter(char);
         std::map<char, AlphabetNode>* getSubletters();
 
         void recursivePrint(char *prefix);

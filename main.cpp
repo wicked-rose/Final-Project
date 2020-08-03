@@ -53,6 +53,29 @@ void read(AlphabetTree &tree) {
             tree.addWord(word);
         }
     }
+
+    fin.open("../train-balanced-sarcasm-nonsarcastic.csv", ios::in);
+
+    while (!fin.eof()) {
+        // read each line
+        getline(fin, line, '\n');
+        stringstream s(line);
+        // separate by words
+        while (getline(s, word, ' ')) {
+            // get rid of punctuation
+            int length = word.size();
+            for (int i = 0; i < length; i++) {
+                if (ispunct(word[i])) {
+                    word.erase(i--, 1);
+                    length = word.size();
+                }
+            }
+            // turns each letter lowercase
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+            tree.delWord(word);
+        }
+    }
 }
 
 

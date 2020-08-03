@@ -13,16 +13,36 @@ AlphabetTree::AlphabetTree() {
 // Adds a word into the tree
 void AlphabetTree::addWord(string word) {
     AlphabetNode* currentNode = topNode;
+    // Increase total word count
+    currentNode->incCount();
     int stringPos = 0;
 
-    // Increases the count for each node in the word
+    // Get to the last node in the word
     while (currentNode != nullptr && stringPos < word.length()){
-        currentNode->incCount();
         currentNode = currentNode->addSubletter(word.at(stringPos));
         stringPos++;
     }
-    // Need to increment the last letter
+    // Increment the last letter
     currentNode->incCount();
+}
+
+// Removes a word
+void AlphabetTree::delWord(string word) {
+    AlphabetNode* currentNode = topNode;
+    int stringPos = 0;
+
+    // Get to the last node in the word
+    for (int stringPos = 0; stringPos < word.length(); stringPos++){
+        AlphabetNode* tempNext = currentNode->getSubletter(word.at(stringPos));
+        if(tempNext == nullptr)
+            return;
+        currentNode = tempNext;
+    }
+    // Need to decrement the last letter
+    currentNode->decCount();
+
+    // Decrement the word count as well
+    topNode->decCount();
 }
 
 // Returns the number of times the word shows up in the tree
@@ -36,7 +56,7 @@ int AlphabetTree::getCount(string word) {
         currentNode = tempNext;
     }
 
-    return currentNode->getCount() - currentNode->getSublettersCount();
+    return currentNode->getCount();
 }
 
 // Prints the top 10 most common words in the list
@@ -50,7 +70,7 @@ void AlphabetTree::printTopTen(){
         nodeStack.pop();
 
         // Check if count > topTen[9], if so, insertion sort into topTen
-        unsigned int count = currentNode->getCount() - currentNode->getSublettersCount();
+        unsigned int count = currentNode->getCount();
         if(count > topTen[9].first){
             topTen[9] = make_pair(count, currentNode);
             for(int i = 8; i >= 0; i--) {
@@ -87,7 +107,7 @@ void AlphabetTree::printWords(){
         AlphabetNode *currentNode = nodeStack.top();
         nodeStack.pop();
 
-        unsigned int tempCount = currentNode->getCount() - currentNode->getSublettersCount();
+        unsigned int tempCount = currentNode->getCount();
         if(tempCount > 0)
             cout << currentNode->getRootToSelfString() << ": " << tempCount << endl;
 
