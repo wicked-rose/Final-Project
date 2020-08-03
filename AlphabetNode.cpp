@@ -11,7 +11,7 @@ using namespace std;
 // Default constructor
 AlphabetNode::AlphabetNode() : letter(0){
     count = 0;
-    subletters = map<char, AlphabetNode>();
+    subletters = map<char, AlphabetNode*>();
     parent = nullptr;
 }
 
@@ -19,7 +19,7 @@ AlphabetNode::AlphabetNode() : letter(0){
 AlphabetNode::AlphabetNode(char letter, AlphabetNode* parent) : letter(letter){
     this->parent = parent;
     count = 0;
-    subletters = map<char, AlphabetNode>();
+    subletters = map<char, AlphabetNode*>();
 }
 
 //Copy Constructor
@@ -41,23 +41,25 @@ unsigned int AlphabetNode::getCount(){
 AlphabetNode* AlphabetNode::getSubletter(char subletter){
     if(subletters.count(subletter) == 0)
         return nullptr;
-    return &subletters[subletter];
+    return subletters[subletter];
 }
 
-// Creates subletter node if one doesn't already exist, always returns a reference to the requested AlphabetNode
+// Creates subletter node if one doesn't already exist, always returns a reference to the requested AlphabetNode. Does not increment count
 AlphabetNode *AlphabetNode::addSubletter(char subletter) {
-    if(subletters.count(subletter) == 0)
+    if(subletters.count(subletter) == 0){
         subletters[subletter] = new AlphabetNode(subletter, this);
-    return &subletters[subletter];
+}
+    return subletters[subletter];
 }
 
 void AlphabetNode::delSubletter(char subletter) {
-    subletters.erase(subletter);
+    if(subletters.find(subletter) != subletters.end())
+        subletters.erase(subletter);
 
     // Check if there is a reason to keep this node
     if(count > 0)
         return;
-    else if(getSubletters()->empty()){
+    else if(subletters.empty()){
         delete this;
     }
 }
@@ -72,8 +74,10 @@ void AlphabetNode::incCount(){
 
 // Decrements the count and deletes the node if count gets to 0 and there are no subletters
 void AlphabetNode::decCount() {
-    if(count-- > 0)
+    if(count > 0){
+        count--;
         return;
+    }
     else if(getSubletters()->empty()){
         delete this;
     }
@@ -98,11 +102,11 @@ void AlphabetNode::recursivePrint(char* prefix){
             strcpy(temp, prefix);
             strcat(temp, &letter);
         }
-        iter->second.recursivePrint(temp);
+        iter->second->recursivePrint(temp);
     }
 }
 
-map<char, AlphabetNode>* AlphabetNode::getSubletters() {
+map<char, AlphabetNode*>* AlphabetNode::getSubletters() {
     return &subletters;
 }
 

@@ -31,7 +31,7 @@ void read(AlphabetTree &tree) {
     fstream fin;
     fin.open("../train-balanced-sarcasm.csv", ios::in);
 
-    string line, word, temp;
+    string line, word;
 
     while (!fin.eof()) {
         // read each line
@@ -54,11 +54,12 @@ void read(AlphabetTree &tree) {
         }
     }
 
-    fin.open("../train-balanced-sarcasm-nonsarcastic.csv", ios::in);
+    fstream fin2;
+    fin2.open("../train-balanced-sarcasm-nonsarcastic.csv", ios::in);
 
-    while (!fin.eof()) {
+    while (!fin2.eof()) {
         // read each line
-        getline(fin, line, '\n');
+        getline(fin2, line, '\n');
         stringstream s(line);
         // separate by words
         while (getline(s, word, ' ')) {

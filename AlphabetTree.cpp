@@ -29,7 +29,6 @@ void AlphabetTree::addWord(string word) {
 // Removes a word
 void AlphabetTree::delWord(string word) {
     AlphabetNode* currentNode = topNode;
-    int stringPos = 0;
 
     // Get to the last node in the word
     for (int stringPos = 0; stringPos < word.length(); stringPos++){
@@ -71,7 +70,7 @@ void AlphabetTree::printTopTen(){
 
         // Check if count > topTen[9], if so, insertion sort into topTen
         unsigned int count = currentNode->getCount();
-        if(count > topTen[9].first){
+        if(count > topTen[9].first && currentNode->getLetter() != -1){
             topTen[9] = make_pair(count, currentNode);
             for(int i = 8; i >= 0; i--) {
                 if (topTen[i].first < count) {
@@ -86,15 +85,15 @@ void AlphabetTree::printTopTen(){
         // Push children of the currentNode to stack from right to left
         for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
             iter--;
-            nodeStack.push(&iter->second);
+            nodeStack.push(iter->second);
         }
     }
 
-    // Actually prints the top 10
+    // Prints the top 10
     for(int i = 0; i < 10; i++){
         if(topTen[i].second == nullptr)
             break;
-        cout << i+1 << ". \""  << topTen[i].second->getRootToSelfString() << "\"  \twith " << topTen[i].first << " entries" << endl;
+        cout << i+1 << ". \""  << topTen[i].second->getRootToSelfString() << "\" with " << topTen[i].first << " entries" << endl;
     }
 }
 
@@ -114,7 +113,7 @@ void AlphabetTree::printWords(){
         // Push children of the popped node to stack from right to left
         for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
             iter--;
-            nodeStack.push(&iter->second);
+            nodeStack.push(iter->second);
         }
     }
 }
