@@ -118,7 +118,7 @@ int main() {
             cout << "Time taken by Hash Table: " << time_taken << " milliseconds" << endl << endl;
 
             delay(1000);
-            cout << "How exciting!" << endl;
+            cout << "How exciting." << endl;
 
             delay(4000);
 
@@ -136,7 +136,7 @@ int main() {
             cin >> word;
 
             auto t1 = clock::now();
-            int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
+            unsigned int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
@@ -148,6 +148,9 @@ int main() {
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
             cout << "Time taken by Hash Table: " << time_taken << " nanoseconds" << endl << endl;
+
+            delay(1000);
+            cout << "Thrilling." << endl;
 
             delay(4000);
         }

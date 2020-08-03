@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <cstring>
 #include "AlphabetNode.h"
+
 using namespace _AlphabetNode;
 using namespace std;
 
@@ -33,39 +33,14 @@ AlphabetNode::~AlphabetNode() {
     this->parent->delSubletter(this->letter);
 }
 
-unsigned int AlphabetNode::getCount(){
-    return count;
-}
 
-// Return the pointer to the subletter
-AlphabetNode* AlphabetNode::getSubletter(char subletter){
-    if(subletters.count(subletter) == 0)
-        return nullptr;
-    return subletters[subletter];
-}
-
-// Creates subletter node if one doesn't already exist, always returns a reference to the requested AlphabetNode. Does not increment count
-AlphabetNode *AlphabetNode::addSubletter(char subletter) {
-    if(subletters.count(subletter) == 0){
-        subletters[subletter] = new AlphabetNode(subletter, this);
-}
-    return subletters[subletter];
-}
-
-void AlphabetNode::delSubletter(char subletter) {
-    if(subletters.find(subletter) != subletters.end())
-        subletters.erase(subletter);
-
-    // Check if there is a reason to keep this node
-    if(count > 0)
-        return;
-    else if(subletters.empty()){
-        delete this;
-    }
-}
-
-char AlphabetNode::getLetter() {
+char AlphabetNode::getLetter() const {
     return letter;
+}
+
+
+unsigned int AlphabetNode::getCount() const{
+    return count;
 }
 
 void AlphabetNode::incCount(){
@@ -84,31 +59,37 @@ void AlphabetNode::decCount() {
 }
 
 
-// Recursively print every word in the tree below it
-void AlphabetNode::recursivePrint(char* prefix){
-    if(letter == 0)
+// Return the pointer to the subletter
+AlphabetNode* AlphabetNode::getSubletter(char subletter){
+    if(subletters.count(subletter) == 0)
+        return nullptr;
+    return subletters[subletter];
+}
+
+// Creates subletter node if one doesn't already exist, always returns a reference to the requested AlphabetNode. Does not increment count
+AlphabetNode *AlphabetNode::addSubletter(char subletter) {
+    if(subletters.count(subletter) == 0){
+        subletters[subletter] = new AlphabetNode(subletter, this);
+    }
+    return subletters[subletter];
+}
+
+void AlphabetNode::delSubletter(char subletter) {
+    if(subletters.find(subletter) != subletters.end())
+        subletters.erase(subletter);
+
+    // Check if there is a reason to keep this node
+    if(count > 0)
         return;
-
-    unsigned int count = getCount();
-    if(count != 0)
-        cout << count << " occurrence(s) of the word " << prefix << letter << endl;
-
-    if(subletters.empty())
-        return;
-
-    for(auto iter = subletters.begin(); iter != subletters.end(); iter++){
-        char * temp;
-        if (letter != -1){
-            strcpy(temp, prefix);
-            strcat(temp, &letter);
-        }
-        iter->second->recursivePrint(temp);
+    else if(subletters.empty()){
+        delete this;
     }
 }
 
 map<char, AlphabetNode*>* AlphabetNode::getSubletters() {
     return &subletters;
 }
+
 
 // Prepends this->letter to the outString
 void AlphabetNode::selfToAncestorsString(string* outString) {

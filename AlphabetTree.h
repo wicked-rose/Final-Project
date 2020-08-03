@@ -23,10 +23,11 @@ public:
 
     void addWord(string word); // Adds a word into the tree
     void delWord(string word); // Removes a count of a word in the tree
-    int getCount(string word);
-    void printWords();
-    void printTopTen();
-    void printCount();
+    unsigned int getCount(string word);
+
+    void printTopTen(); // Prints the top 10 most common words
+    void printWords(); // Prints all words
+    void printCount(); // Prints the total number of words
 };
 
 
