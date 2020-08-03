@@ -18,7 +18,7 @@
 #else
     #include <unistd.h>
     void delay(unsigned milliseconds){
-        usleep(milliseconds*1000);
+        sleep(milliseconds/1000);
     }
 #endif
 
@@ -133,7 +133,6 @@ int main() {
             delay(500);
             cout << "\nEnter a word to get its sarcasm rating: " << endl;
             cin >> word;
-
 
             auto t1 = clock::now();
             int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
