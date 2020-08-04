@@ -31,7 +31,7 @@ void read(AlphabetTree &tree) {
     fstream fin;
     fin.open("../train-balanced-sarcasm.csv", ios::in);
 
-    string line, word, temp;
+    string line, word;
 
     while (!fin.eof()) {
         // read each line
@@ -51,6 +51,30 @@ void read(AlphabetTree &tree) {
             transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             tree.addWord(word);
+        }
+    }
+
+    fstream fin2;
+    fin2.open("../train-balanced-sarcasm-nonsarcastic.csv", ios::in);
+
+    while (!fin2.eof()) {
+        // read each line
+        getline(fin2, line, '\n');
+        stringstream s(line);
+        // separate by words
+        while (getline(s, word, ' ')) {
+            // get rid of punctuation
+            int length = word.size();
+            for (int i = 0; i < length; i++) {
+                if (ispunct(word[i])) {
+                    word.erase(i--, 1);
+                    length = word.size();
+                }
+            }
+            // turns each letter lowercase
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+            tree.delWord(word);
         }
     }
 }
@@ -93,6 +117,9 @@ int main() {
             time_taken = duration_cast<milliseconds>(t2-t1).count();
             cout << "Time taken by Hash Table: " << time_taken << " milliseconds" << endl << endl;
 
+            delay(1000);
+            cout << "How exciting." << endl;
+
             delay(4000);
 
         } else if (choice == 2) {
@@ -109,7 +136,7 @@ int main() {
             cin >> word;
 
             auto t1 = clock::now();
-            int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
+            unsigned int rating = tree.getCount(word); // this will be function to find word in DS 1 and return rating
             auto t2 = clock::now();
             double time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
@@ -121,6 +148,9 @@ int main() {
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
             cout << "Time taken by Hash Table: " << time_taken << " nanoseconds" << endl << endl;
+
+            delay(1000);
+            cout << "Thrilling." << endl;
 
             delay(4000);
         }

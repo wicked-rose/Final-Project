@@ -1,7 +1,7 @@
 //
 // Created by Kyle on 7/27/2020.
 //
-
+#define TOP_AMOUNT 10
 
 #include "AlphabetTree.h"
 
@@ -10,25 +10,46 @@ AlphabetTree::AlphabetTree() {
     this->topNode = new AlphabetNode(-1, nullptr);
 }
 
+
 // Adds a word into the tree
 void AlphabetTree::addWord(string word) {
     AlphabetNode* currentNode = topNode;
+    // Increase total word count
+    currentNode->incCount();
     int stringPos = 0;
 
-    // Increases the count for each node in the word
+    // Get to the last node in the word
     while (currentNode != nullptr && stringPos < word.length()){
-        currentNode->incCount();
         currentNode = currentNode->addSubletter(word.at(stringPos));
         stringPos++;
     }
-    // Need to increment the last letter
+    // Increment the last letter
     currentNode->incCount();
 }
 
-// Returns the number of times the word shows up in the tree
-int AlphabetTree::getCount(string word) {
+// Removes a word
+void AlphabetTree::delWord(string word) {
     AlphabetNode* currentNode = topNode;
 
+    // Get to the last node in the word
+    for (int stringPos = 0; stringPos < word.length(); stringPos++){
+        AlphabetNode* tempNext = currentNode->getSubletter(word.at(stringPos));
+        if(tempNext == nullptr)
+            return;
+        currentNode = tempNext;
+    }
+    // Need to decrement the last letter
+    currentNode->decCount();
+
+    // Decrement the word count as well
+    topNode->decCount();
+}
+
+// Returns the number of times the word shows up in the tree
+unsigned int AlphabetTree::getCount(string word) {
+    AlphabetNode* currentNode = topNode;
+
+    // Get to the last node in the word
     for (int stringPos = 0; stringPos < word.length(); stringPos++){
         AlphabetNode* tempNext = currentNode->getSubletter(word.at(stringPos));
         if(tempNext == nullptr)
@@ -36,24 +57,26 @@ int AlphabetTree::getCount(string word) {
         currentNode = tempNext;
     }
 
-    return currentNode->getCount() - currentNode->getSublettersCount();
+    return currentNode->getCount();
 }
+
 
 // Prints the top 10 most common words in the list
 void AlphabetTree::printTopTen(){
     stack<AlphabetNode *> nodeStack;
-    pair<int, AlphabetNode*> topTen[10];
+    pair<int, AlphabetNode*> topTen[TOP_AMOUNT];
     nodeStack.push(topNode);
 
     while (!nodeStack.empty()){
         AlphabetNode *currentNode = nodeStack.top();
         nodeStack.pop();
 
-        // Check if count > topTen[9], if so, insertion sort into topTen
-        unsigned int count = currentNode->getCount() - currentNode->getSublettersCount();
-        if(count > topTen[9].first){
-            topTen[9] = make_pair(count, currentNode);
-            for(int i = 8; i >= 0; i--) {
+
+        unsigned int count = currentNode->getCount();
+        // Insertion sort into topTen
+        if(count > topTen[TOP_AMOUNT - 1].first && currentNode->getLetter() != -1){
+            topTen[TOP_AMOUNT - 1] = make_pair(count, currentNode);
+            for(int i = TOP_AMOUNT - 2; i >= 0; i--) {
                 if (topTen[i].first < count) {
                     topTen[i + 1] = topTen[i];
                     topTen[i] = make_pair(count, currentNode);
@@ -66,19 +89,19 @@ void AlphabetTree::printTopTen(){
         // Push children of the currentNode to stack from right to left
         for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
             iter--;
-            nodeStack.push(&iter->second);
+            nodeStack.push(iter->second);
         }
     }
 
-    // Actually prints the top 10
-    for(int i = 0; i < 10; i++){
+    // Prints the top 10
+    for(int i = 0; i < TOP_AMOUNT; i++){
         if(topTen[i].second == nullptr)
             break;
-        cout << i+1 << ". \""  << topTen[i].second->getRootToSelfString() << "\"  \twith " << topTen[i].first << " entries" << endl;
+        cout << i+1 << ". \""  << topTen[i].second->getRootToSelfString() << "\" with " << topTen[i].first << " entries" << endl;
     }
 }
 
-// Recursively prints all words in the tree
+// Prints all words in the tree
 void AlphabetTree::printWords(){
     stack<AlphabetNode *> nodeStack;
     nodeStack.push(topNode);
@@ -87,14 +110,14 @@ void AlphabetTree::printWords(){
         AlphabetNode *currentNode = nodeStack.top();
         nodeStack.pop();
 
-        unsigned int tempCount = currentNode->getCount() - currentNode->getSublettersCount();
+        unsigned int tempCount = currentNode->getCount();
         if(tempCount > 0)
             cout << currentNode->getRootToSelfString() << ": " << tempCount << endl;
 
         // Push children of the popped node to stack from right to left
         for(auto iter = currentNode->getSubletters()->end(); iter != currentNode->getSubletters()->begin();){
             iter--;
-            nodeStack.push(&iter->second);
+            nodeStack.push(iter->second);
         }
     }
 }
