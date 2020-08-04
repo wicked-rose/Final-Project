@@ -1,3 +1,5 @@
+
+#include "hashtable.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -11,12 +13,12 @@
 
 
 #ifdef _WIN32
-    #include <Windows.h>
-    void delay(unsigned milliseconds){
-        Sleep(milliseconds);
-    }
+#include <Windows.h>
+void delay(unsigned milliseconds){
+    Sleep(milliseconds);
+}
 #else
-    #include <unistd.h>
+#include <unistd.h>
     void delay(unsigned milliseconds){
         sleep(milliseconds/1000);
     }
@@ -51,6 +53,7 @@ void read(AlphabetTree &tree) {
             transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             tree.addWord(word);
+            read(word);
         }
     }
 
@@ -75,6 +78,7 @@ void read(AlphabetTree &tree) {
             transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             tree.delWord(word);
+            decrementCount(word);
         }
     }
 }
@@ -112,7 +116,7 @@ int main() {
 
             cout << "Top 10 Most Sarcastic Words From Hash Table: " << endl;
             t1 = clock::now();
-            // this will be function to print top 10 from DS 2
+            printMaxValues();
             t2 = clock::now();
             time_taken = duration_cast<milliseconds>(t2-t1).count();
             cout << "Time taken by Hash Table: " << time_taken << " milliseconds" << endl << endl;
@@ -143,7 +147,7 @@ int main() {
             cout << "Time taken by 26-ary Tree: " << time_taken << " nanoseconds" << endl << endl;
 
             t1 = clock::now();
-            rating = 0; // this will be function to find word in DS 2 and return rating
+            rating = findSarcasmCount(word); // this will be function to find word in DS 2 and return rating
             t2 = clock::now();
             time_taken = duration_cast<nanoseconds>(t2-t1).count();
             cout << "The sarcasm rating of \"" << word << "\" is: " << rating << endl;
@@ -160,4 +164,3 @@ int main() {
 
     return 0;
 }
-
