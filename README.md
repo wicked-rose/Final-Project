@@ -8,4 +8,7 @@ This is the final project for COP3530 Summer 2020. A sarcasm detector utilizing 
 
 ### How to Run
 Download all source files, compile, and run
-Can input 1, 2, 3 to either 1. print top 10, 2. search for a word's sarcasm rating, 3. quit
+Can input 1, 2, 3 to either 
+1. print top 10 
+2. search for a word's sarcasm rating
+3. quit
